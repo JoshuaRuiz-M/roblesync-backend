@@ -6,6 +6,7 @@ import { getValidated } from "../http/validated-request";
 
 import type { PaginationParams } from "../http/pagination";
 import type { RepositoryId } from "../repositories/base-repository.types";
+import { AuthUser } from "../../features/auth/auth.types";
 
 export abstract class BaseController<
     TEntity extends object,
@@ -45,19 +46,23 @@ export abstract class BaseController<
     };
 
     create = async (_req: Request, res: Response): Promise<void> => {
+        const { user_id } = res.locals.authUser as AuthUser;
+
         const data = getValidated<TCreate>(res, "body");
 
-        const entity = await this.service.create(data);
+        const entity = await this.service.create(data, user_id);
 
         ApiResponder.created(res, entity, "Recurso creado correctamente.");
     };
 
     update = async (_req: Request, res: Response): Promise<void> => {
+        const { user_id } = res.locals.authUser as AuthUser;
+
         const id = this.getId(res);
 
         const data = getValidated<TUpdate>(res, "body");
 
-        const entity = await this.service.update(id, data);
+        const entity = await this.service.update(id, data, user_id);
 
         ApiResponder.ok(res, entity, "Recurso actualizado correctamente.");
     };

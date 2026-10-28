@@ -9,7 +9,6 @@ import {
 } from "../http/pagination";
 
 import type { RepositoryConfig, RepositoryId } from "./base-repository.types";
-
 export abstract class BaseRepository<
     TEntity extends object,
     TCreate extends object,
@@ -78,15 +77,18 @@ export abstract class BaseRepository<
         return (result as TEntity | undefined) ?? null;
     }
 
-    async create(data: TCreate): Promise<TEntity> {
+    async create(data: TCreate, user_id: number): Promise<TEntity> {
         const validated = this.config.schemas.create.parse(data);
 
-        const dataToInsert = this.config.hasAuditFields
-            ? {
-                  ...validated,
-                  created_at: this.db.raw("SYSUTCDATETIME()"),
-              }
-            : validated;
+        const dataToInsert = {
+            ...validated,
+            ...(this.config.hasAuditFields && {
+                created_at: this.db.raw("SYSUTCDATETIME()"),
+            }),
+            ...(this.config.hasUserFields && {
+                created_by: user_id,
+            }),
+        };
 
         const [created] = await this.query().insert(dataToInsert).returning(this.config.primaryKey);
 
@@ -101,19 +103,22 @@ export abstract class BaseRepository<
         return entity;
     }
 
-    async update(id: RepositoryId, data: TUpdate): Promise<TEntity | null> {
+    async update(id: RepositoryId, data: TUpdate, user_id: number): Promise<TEntity | null> {
         const validated = this.config.schemas.update.parse(data);
 
         if (Object.keys(validated).length === 0) {
             throw new Error("Update requires at least one field");
         }
 
-        const dataToUpdate = this.config.hasAuditFields
-            ? {
-                  ...validated,
-                  updated_at: this.db.raw("SYSUTCDATETIME()"),
-              }
-            : validated;
+        const dataToUpdate = {
+            ...validated,
+            ...(this.config.hasAuditFields && {
+                updated_at: this.db.raw("SYSUTCDATETIME()"),
+            }),
+            ...(this.config.hasUserFields && {
+                updated_by: user_id,
+            }),
+        };
 
         const affectedRows = await this.query()
             .where(this.config.primaryKey, id)

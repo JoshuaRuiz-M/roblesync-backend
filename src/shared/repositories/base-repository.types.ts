@@ -20,4 +20,5 @@ export interface RepositoryConfig<
     };
 
     hasAuditFields?: boolean;
+    hasUserFields?: boolean;
 }

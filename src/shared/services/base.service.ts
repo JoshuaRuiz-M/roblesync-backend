@@ -35,12 +35,12 @@ export abstract class BaseService<
         return this.repository.count();
     }
 
-    async create(data: TCreate): Promise<TEntity> {
-        return this.repository.create(data);
+    async create(data: TCreate, user_id: number): Promise<TEntity> {
+        return this.repository.create(data, user_id);
     }
 
-    async update(id: RepositoryId, data: TUpdate): Promise<TEntity> {
-        const entity = await this.repository.update(id, data);
+    async update(id: RepositoryId, data: TUpdate, user_id: number): Promise<TEntity> {
+        const entity = await this.repository.update(id, data, user_id);
 
         if (entity === null) {
             throw this.notFound(id);
