@@ -1,4 +1,4 @@
-import { BaseController } from "../../shared/controllers/base.controller";
+import { BaseController } from "../../../shared/controllers/base.controller";
 import { CategoriesService } from "./categories.service";
 
 import type { Category } from "./categories.types";

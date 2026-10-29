@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import { authenticate } from "../../shared/middlewares/authenticate";
-import { authorize } from "../../shared/middlewares/authorize";
-import { validateRequest } from "../../shared/middlewares/validate-request";
+import { authenticate } from "../../../shared/middlewares/authenticate";
+import { authorize } from "../../../shared/middlewares/authorize";
+import { validateRequest } from "../../../shared/middlewares/validate-request";
 
 import { createBrandsSchema, updateBrandsSchema } from "./brands.schema";
 
@@ -10,7 +10,7 @@ import { BrandPermission } from "./brands.permissions";
 import { BrandsRepository } from "./brands.repository";
 import { BrandsService } from "./brands.service";
 import { BrandsController } from "./brands.controller";
-import { numericIdSchema, paginationSchema } from "../../shared/schemas/common.schema";
+import { numericIdSchema, paginationSchema } from "../../../shared/schemas/common.schema";
 
 const router = Router();
 

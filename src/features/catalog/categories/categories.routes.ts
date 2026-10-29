@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import { authenticate } from "../../shared/middlewares/authenticate";
-import { authorize } from "../../shared/middlewares/authorize";
-import { validateRequest } from "../../shared/middlewares/validate-request";
+import { authenticate } from "../../../shared/middlewares/authenticate";
+import { authorize } from "../../../shared/middlewares/authorize";
+import { validateRequest } from "../../../shared/middlewares/validate-request";
 
 import { createCategoriesSchema, updateCategoriesSchema } from "./categories.schema";
 
@@ -10,7 +10,7 @@ import { CategoryPermission } from "./categories.permissions";
 import { CategoriesRepository } from "./categories.repository";
 import { CategoriesService } from "./categories.service";
 import { CategoriesController } from "./categories.controller";
-import { numericIdSchema, paginationSchema } from "../../shared/schemas/common.schema";
+import { numericIdSchema, paginationSchema } from "../../../shared/schemas/common.schema";
 
 const router = Router();
 const repository = new CategoriesRepository();

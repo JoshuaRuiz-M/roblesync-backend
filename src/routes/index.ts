@@ -4,8 +4,8 @@ import rolesRoutes from "../features/roles/roles.routes";
 import menuItemsRoutes from "../features/menu-items/menu-items.routes";
 import usersRoutes from "../features/users/users.routes";
 import permissionsRoutes from "../features/permissions/permissions.routes";
-import brandsRoutes from "../features/brands/brands.routes";
-import categoriesRoutes from "../features/categories/categories.routes";
+import brandsRoutes from "../features/catalog/brands/brands.routes";
+import categoriesRoutes from "../features/catalog/categories/categories.routes";
 
 const router = Router();
 

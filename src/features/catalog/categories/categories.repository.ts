@@ -1,4 +1,4 @@
-import { BaseRepository } from "../../shared/repositories/base.repository";
+import { BaseRepository } from "../../../shared/repositories/base.repository";
 
 import { createCategoriesSchema, updateCategoriesSchema } from "./categories.schema";
 

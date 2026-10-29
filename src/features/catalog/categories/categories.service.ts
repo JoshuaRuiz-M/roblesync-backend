@@ -1,4 +1,4 @@
-import { BaseService } from "../../shared/services/base.service";
+import { BaseService } from "../../../shared/services/base.service";
 import { CategoriesRepository } from "./categories.repository";
 
 import type { Category } from "./categories.types";
