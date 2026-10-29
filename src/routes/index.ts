@@ -6,6 +6,7 @@ import usersRoutes from "../features/users/users.routes";
 import permissionsRoutes from "../features/permissions/permissions.routes";
 import brandsRoutes from "../features/catalog/brands/brands.routes";
 import categoriesRoutes from "../features/catalog/categories/categories.routes";
+import suppliersRoutes from "../features/purchasing/suppliers/suppliers.routes";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use("/users", usersRoutes);
 router.use("/permissions", permissionsRoutes);
 router.use("/brands", brandsRoutes);
 router.use("/categories", categoriesRoutes);
+router.use("/suppliers", suppliersRoutes);
 
 export default router;
