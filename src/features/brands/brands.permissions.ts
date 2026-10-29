@@ -1,0 +1,6 @@
+export enum BrandPermission {
+    BRAND_READ = "BRAND_READ",
+    BRAND_CREATE = "BRAND_CREATE",
+    BRAND_UPDATE = "BRAND_UPDATE",
+    BRAND_DELETE = "BRAND_DELETE",
+}
