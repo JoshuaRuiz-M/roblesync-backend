@@ -5,6 +5,7 @@ import menuItemsRoutes from "../features/menu-items/menu-items.routes";
 import usersRoutes from "../features/users/users.routes";
 import permissionsRoutes from "../features/permissions/permissions.routes";
 import brandsRoutes from "../features/brands/brands.routes";
+import categoriesRoutes from "../features/categories/categories.routes";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use("/menu-items", menuItemsRoutes);
 router.use("/users", usersRoutes);
 router.use("/permissions", permissionsRoutes);
 router.use("/brands", brandsRoutes);
+router.use("/categories", categoriesRoutes);
 
 export default router;
