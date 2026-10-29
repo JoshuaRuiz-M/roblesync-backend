@@ -10,6 +10,7 @@ import productLinesRoutes from "../features/catalog/product-lines/product-lines.
 import suppliersRoutes from "../features/purchasing/suppliers/suppliers.routes";
 import unitsOfMeasureRoutes from "../features/catalog/units-of-measure/units-of-measure.routes";
 import productsRoutes from "../features/catalog/products/products.routes";
+import warehousesRoutes from "../features/inventory/warehouses/warehouses.routes";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/product-lines", productLinesRoutes);
 router.use("/suppliers", suppliersRoutes);
 router.use("/units-of-measure", unitsOfMeasureRoutes);
 router.use("/products", productsRoutes);
+router.use("/warehouses", warehousesRoutes);
 
 export default router;
