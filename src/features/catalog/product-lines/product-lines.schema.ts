@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const createproductLinesSchema = z.strictObject({
+    
     category_id: z.number().int().positive(),
 
     code: z.string().trim().min(1).max(50),

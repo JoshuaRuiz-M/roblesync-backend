@@ -17,15 +17,17 @@
  *           example: 1
  *         code:
  *           type: string
- *           example: ENLATADOS
+ *           example: ATUN
  *         name:
  *           type: string
- *           example: Sardinas
+ *           example: Atún enlatado
  *         description:
  *           type: string
  *           nullable: true
+ *           example: Productos de atún en aceite y agua.
  *         is_active:
  *           type: boolean
+ *           example: true
  *         created_at:
  *           type: string
  *           format: date-time
@@ -38,46 +40,68 @@
  *           example: 1
  *         updated_by:
  *           type: integer
+ *           nullable: true
  *           example: 1
  *
  *     CreateProductLine:
  *       type: object
+ *       additionalProperties: false
  *       required:
+ *         - category_id
  *         - code
  *         - name
  *       properties:
+ *         category_id:
+ *           type: integer
+ *           minimum: 1
+ *           example: 1
  *         code:
  *           type: string
+ *           minLength: 1
  *           maxLength: 50
- *           example: ENLATADOS
+ *           example: ATUN
  *         name:
  *           type: string
+ *           minLength: 1
  *           maxLength: 150
- *           example: Sardinas
+ *           example: Atún enlatado
  *         description:
  *           type: string
  *           maxLength: 500
  *           nullable: true
+ *           example: Productos de atún en aceite y agua.
  *         is_active:
  *           type: boolean
  *           default: true
+ *           example: true
  *
  *     UpdateProductLine:
  *       type: object
+ *       additionalProperties: false
  *       minProperties: 1
  *       properties:
+ *         category_id:
+ *           type: integer
+ *           minimum: 1
+ *           example: 2
  *         code:
  *           type: string
- *           maxLength: 150
+ *           minLength: 1
+ *           maxLength: 50
+ *           example: ATUN
  *         name:
  *           type: string
+ *           minLength: 1
  *           maxLength: 150
+ *           example: Atún Premium
  *         description:
  *           type: string
  *           maxLength: 500
  *           nullable: true
+ *           example: Productos de atún premium.
  *         is_active:
  *           type: boolean
+ *           example: true
  */
 
 /**
@@ -155,6 +179,7 @@
  *       schema:
  *         type: integer
  *         minimum: 1
+ *
  *   get:
  *     tags: [Líneas de Producto]
  *     summary: Obtener línea de producto por identificador
