@@ -235,6 +235,84 @@ export class InventoryRepository {
         return stock;
     }
 
+    async reserveStock(
+        trx: Knex.Transaction,
+        data: {
+            warehouse_id: number;
+            product_id: number;
+            quantity: number;
+            user_id: number;
+        },
+    ): Promise<void> {
+        const quantity = this.toQuantity(data.quantity);
+
+        if (
+            !Number.isFinite(data.quantity) ||
+            quantity <= 0 ||
+            Math.abs(quantity - data.quantity) > 0.000001
+        ) {
+            throw new AppError(HttpStatus.BAD_REQUEST, "La cantidad a reservar no es válida.");
+        }
+
+        const affectedRows = await trx("inventory.warehouse_stock")
+            .where({
+                warehouse_id: data.warehouse_id,
+                product_id: data.product_id,
+            })
+            .whereRaw("quantity_on_hand - quantity_reserved >= ?", [quantity])
+            .increment("quantity_reserved", quantity)
+            .update({
+                updated_at: trx.raw("SYSUTCDATETIME()"),
+                updated_by: data.user_id,
+            });
+
+        if (affectedRows === 0) {
+            throw new AppError(
+                HttpStatus.CONFLICT,
+                `No hay inventario suficiente para reservar el producto ${data.product_id}.`,
+            );
+        }
+    }
+
+    async releaseReservedStock(
+        trx: Knex.Transaction,
+        data: {
+            warehouse_id: number;
+            product_id: number;
+            quantity: number;
+            user_id: number;
+        },
+    ): Promise<void> {
+        const quantity = this.toQuantity(data.quantity);
+
+        if (
+            !Number.isFinite(data.quantity) ||
+            quantity <= 0 ||
+            Math.abs(quantity - data.quantity) > 0.000001
+        ) {
+            throw new AppError(HttpStatus.BAD_REQUEST, "La cantidad a liberar no es válida.");
+        }
+
+        const affectedRows = await trx("inventory.warehouse_stock")
+            .where({
+                warehouse_id: data.warehouse_id,
+                product_id: data.product_id,
+            })
+            .where("quantity_reserved", ">=", quantity)
+            .decrement("quantity_reserved", quantity)
+            .update({
+                updated_at: trx.raw("SYSUTCDATETIME()"),
+                updated_by: data.user_id,
+            });
+
+        if (affectedRows === 0) {
+            throw new AppError(
+                HttpStatus.CONFLICT,
+                `No se pudo liberar la reserva del producto ${data.product_id}.`,
+            );
+        }
+    }
+
     private isUniqueViolation(error: unknown): boolean {
         if (typeof error !== "object" || error === null) {
             return false;
