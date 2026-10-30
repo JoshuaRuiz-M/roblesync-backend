@@ -23,7 +23,8 @@
  *           example: Distribuidora El Progreso, S.A.
  *         customer_type:
  *           type: string
- *           example: MAYORISTA
+ *           enum: [WHOLESALE, RETAIL, CHAIN]
+ *           example: WHOLESALE
  *         contact_name:
  *           type: string
  *           nullable: true
@@ -62,13 +63,13 @@
  *         created_at:
  *           type: string
  *           format: date-time
+ *         created_by:
+ *           type: integer
+ *           example: 1
  *         updated_at:
  *           type: string
  *           format: date-time
  *           nullable: true
- *         created_by:
- *           type: integer
- *           example: 1
  *         updated_by:
  *           type: integer
  *           nullable: true
@@ -81,7 +82,6 @@
  *         - customer_code
  *         - tax_id
  *         - business_name
- *         - customer_type
  *         - salesperson_id
  *         - price_list_id
  *         - credit_days
@@ -105,9 +105,9 @@
  *           example: Distribuidora El Progreso, S.A.
  *         customer_type:
  *           type: string
- *           minLength: 1
- *           maxLength: 20
- *           example: MAYORISTA
+ *           enum: [WHOLESALE, RETAIL, CHAIN]
+ *           default: RETAIL
+ *           example: WHOLESALE
  *         contact_name:
  *           type: string
  *           maxLength: 150
@@ -175,9 +175,8 @@
  *           example: Distribuidora El Progreso, S.A.
  *         customer_type:
  *           type: string
- *           minLength: 1
- *           maxLength: 20
- *           example: MINORISTA
+ *           enum: [WHOLESALE, RETAIL, CHAIN]
+ *           example: RETAIL
  *         contact_name:
  *           type: string
  *           maxLength: 150
