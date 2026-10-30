@@ -59,6 +59,14 @@
  *         - tax_id
  *         - business_name
  *       properties:
+ *         tax_id:
+ *           type: string
+ *           maxLength: 20
+ *           example: 12345678
+ *         business_name:
+ *           type: string
+ *           maxLength: 200
+ *           example: Proveedor S.A.
  *         contact_name:
  *           type: string
  *           maxLength: 200
