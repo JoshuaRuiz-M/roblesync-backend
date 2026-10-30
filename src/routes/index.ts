@@ -13,7 +13,7 @@ import productsRoutes from "../features/catalog/products/products.routes";
 import warehousesRoutes from "../features/inventory/warehouses/warehouses.routes";
 import productBatchesRoutes from "../features/inventory/product-batches/product-batches.routes";
 import purchaseOrdersRoutes from "../features/purchasing/purchase-orders/purchase-orders.routes";
-
+import inventoryMovementsRoutes from "../features/inventory/inventory-movements/inventory-movements.routes";
 const router = Router();
 
 // Feature routes
@@ -31,5 +31,6 @@ router.use("/products", productsRoutes);
 router.use("/warehouses", warehousesRoutes);
 router.use("/product-batches", productBatchesRoutes);
 router.use("/purchase-orders", purchaseOrdersRoutes);
+router.use("/inventory-movements", inventoryMovementsRoutes);
 
 export default router;
