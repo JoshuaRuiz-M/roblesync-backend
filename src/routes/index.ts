@@ -18,6 +18,7 @@ import goodsReceiptsRoutes from "../features/purchasing/goods-receipts/goods-rec
 import suppliersInvoicesRoutes from "../features/purchasing/supplier-invoices/suppliers-invoices.routes";
 import salespersonsRoutes from "../features/sales/salespersons/salespersons.routes";
 import customersRoutes from "../features/sales/customers/customers.routes";
+import priceListsRoutes from "../features/sales/price-lists/price-lists.routes";
 
 const router = Router();
 
@@ -41,5 +42,6 @@ router.use("/goods-receipts", goodsReceiptsRoutes);
 router.use("/supplier-invoices", suppliersInvoicesRoutes);
 router.use("/salespersons", salespersonsRoutes);
 router.use("/customers", customersRoutes);
+router.use("/price-lists", priceListsRoutes);
 
 export default router;
