@@ -25,5 +25,28 @@ export const updateProductsSchema = createProductsSchema
         "Debe proporcionar al menos un campo para actualizar.",
     );
 
+export const createProductSupplierSchema = z.object({
+    supplier_id: z.number().int().positive(),
+    is_preferred: z.boolean().default(false),
+    is_active: z.boolean().default(true),
+});
+
+export const updateProductSupplierSchema = z
+    .object({
+        is_preferred: z.boolean().optional(),
+        is_active: z.boolean().optional(),
+    })
+    .strict()
+    .refine((data) => Object.keys(data).length > 0, "Debe proporcionar al menos un campo");
+
+export const productSupplierParamsSchema = z.object({
+    id: z.coerce.number().int().positive(),
+    supplierId: z.coerce.number().int().positive(),
+});
+
+export type CreateProductSupplierInput = z.input<typeof createProductSupplierSchema>;
+
+export type UpdateProductSupplierInput = z.infer<typeof updateProductSupplierSchema>;
+
 export type CreateProductsInput = z.output<typeof createProductsSchema>;
 export type UpdateProductsInput = z.output<typeof updateProductsSchema>;

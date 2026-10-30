@@ -1,16 +1,24 @@
 import { Router } from "express";
 
+import { ProductsRepository } from "./products.repository";
+import { ProductsService } from "./products.service";
+import { ProductsController } from "./products.controller";
+
+import {
+    createProductsSchema,
+    updateProductsSchema,
+    createProductSupplierSchema,
+    updateProductSupplierSchema,
+    productSupplierParamsSchema,
+} from "./products.schema";
+
+import { ProductPermission } from "./products.permissions";
+
 import { authenticate } from "../../../shared/middlewares/authenticate";
 import { authorize } from "../../../shared/middlewares/authorize";
 import { validateRequest } from "../../../shared/middlewares/validate-request";
 
-import { createProductsSchema, updateProductsSchema } from "./products.schema";
-
-import { ProductPermission } from "./products.permissions";
-import { ProductsRepository } from "./products.repository";
-import { ProductsService } from "./products.service";
-import { ProductsController } from "./products.controller";
-import { numericIdSchema, paginationSchema } from "../../../shared/schemas/common.schema";
+import { paginationSchema, numericIdSchema } from "../../../shared/schemas/common.schema";
 
 const router = Router();
 
@@ -58,6 +66,51 @@ router.delete(
     authorize(ProductPermission.PRODUCT_DELETE),
     validateRequest({ params: numericIdSchema }),
     controller.delete,
+);
+
+router.get(
+    "/:id/suppliers",
+    authorize(ProductPermission.PRODUCT_SUPPLIER_READ),
+    validateRequest({ params: numericIdSchema }),
+    controller.findSuppliers,
+);
+
+router.post(
+    "/:id/suppliers",
+    authorize(ProductPermission.PRODUCT_SUPPLIER_MANAGE),
+    validateRequest({
+        params: numericIdSchema,
+        body: createProductSupplierSchema,
+    }),
+    controller.addSupplier,
+);
+
+router.patch(
+    "/:id/suppliers/:supplierId",
+    authorize(ProductPermission.PRODUCT_SUPPLIER_MANAGE),
+    validateRequest({
+        params: productSupplierParamsSchema,
+        body: updateProductSupplierSchema,
+    }),
+    controller.updateSupplier,
+);
+
+router.patch(
+    "/:id/suppliers/:supplierId/preferred",
+    authorize(ProductPermission.PRODUCT_SUPPLIER_MANAGE),
+    validateRequest({
+        params: productSupplierParamsSchema,
+    }),
+    controller.setPreferredSupplier,
+);
+
+router.delete(
+    "/:id/suppliers/:supplierId",
+    authorize(ProductPermission.PRODUCT_SUPPLIER_MANAGE),
+    validateRequest({
+        params: productSupplierParamsSchema,
+    }),
+    controller.removeSupplier,
 );
 
 export default router;
