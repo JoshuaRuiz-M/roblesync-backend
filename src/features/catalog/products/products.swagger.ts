@@ -2,7 +2,7 @@
  * @openapi
  * tags:
  *   - name: Productos
- *     description: Administración de productos del sistema.
+ *     description: Administración de productos y sus proveedores asociados.
  *
  * components:
  *   schemas:
@@ -201,6 +201,93 @@
  *           type: boolean
  *         is_active:
  *           type: boolean
+ *
+ *     ProductSupplier:
+ *       type: object
+ *       properties:
+ *         product_supplier_id:
+ *           type: integer
+ *           example: 1
+ *         product_id:
+ *           type: integer
+ *           example: 1
+ *         supplier_id:
+ *           type: integer
+ *           example: 3
+ *         is_preferred:
+ *           type: boolean
+ *           example: true
+ *         is_active:
+ *           type: boolean
+ *           example: true
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *         created_by:
+ *           type: integer
+ *           example: 1
+ *         updated_at:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *         updated_by:
+ *           type: integer
+ *           nullable: true
+ *
+ *     ProductSupplierDetail:
+ *       allOf:
+ *         - $ref: '#/components/schemas/ProductSupplier'
+ *         - type: object
+ *           properties:
+ *             tax_id:
+ *               type: string
+ *               example: "1234567-8"
+ *             business_name:
+ *               type: string
+ *               example: Distribuidora Central S.A.
+ *             contact_name:
+ *               type: string
+ *               nullable: true
+ *               example: Juan Pérez
+ *             phone:
+ *               type: string
+ *               nullable: true
+ *               example: "55551234"
+ *             email:
+ *               type: string
+ *               nullable: true
+ *               example: ventas@distribuidora.com
+ *
+ *     CreateProductSupplier:
+ *       type: object
+ *       additionalProperties: false
+ *       required:
+ *         - supplier_id
+ *       properties:
+ *         supplier_id:
+ *           type: integer
+ *           minimum: 1
+ *           example: 3
+ *         is_preferred:
+ *           type: boolean
+ *           default: false
+ *           example: false
+ *         is_active:
+ *           type: boolean
+ *           default: true
+ *           example: true
+ *
+ *     UpdateProductSupplier:
+ *       type: object
+ *       additionalProperties: false
+ *       minProperties: 1
+ *       properties:
+ *         is_preferred:
+ *           type: boolean
+ *           example: true
+ *         is_active:
+ *           type: boolean
+ *           example: true
  */
 
 /**
@@ -335,6 +422,158 @@
  *         description: Producto no encontrado.
  *       409:
  *         description: El producto tiene relaciones que impiden eliminarlo.
+ *
+ * /api/products/{id}/suppliers:
+ *   parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: integer
+ *         minimum: 1
+ *
+ *   get:
+ *     tags: [Productos]
+ *     summary: Consultar proveedores asociados a un producto
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Proveedores asociados al producto.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ProductSupplierDetail'
+ *       401:
+ *         description: No autenticado.
+ *       403:
+ *         description: Sin permiso PRODUCT_SUPPLIER_READ.
+ *       404:
+ *         description: Producto no encontrado.
+ *
+ *   post:
+ *     tags: [Productos]
+ *     summary: Asociar un proveedor a un producto
+ *     description: Crea una asociación o reactiva una asociación inactiva.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateProductSupplier'
+ *     responses:
+ *       201:
+ *         description: Proveedor asociado correctamente.
+ *       400:
+ *         description: Datos inválidos o proveedor inactivo.
+ *       401:
+ *         description: No autenticado.
+ *       403:
+ *         description: Sin permiso PRODUCT_SUPPLIER_MANAGE.
+ *       404:
+ *         description: Producto o proveedor no encontrado.
+ *       409:
+ *         description: El proveedor ya está asociado al producto.
+ *
+ * /api/products/{id}/suppliers/{supplierId}:
+ *   parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: integer
+ *         minimum: 1
+ *     - in: path
+ *       name: supplierId
+ *       required: true
+ *       schema:
+ *         type: integer
+ *         minimum: 1
+ *
+ *   patch:
+ *     tags: [Productos]
+ *     summary: Actualizar un proveedor asociado a un producto
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateProductSupplier'
+ *     responses:
+ *       200:
+ *         description: Asociación actualizada correctamente.
+ *       400:
+ *         description: Datos inválidos.
+ *       401:
+ *         description: No autenticado.
+ *       403:
+ *         description: Sin permiso PRODUCT_SUPPLIER_MANAGE.
+ *       404:
+ *         description: Producto o asociación no encontrada.
+ *       409:
+ *         description: Conflicto al actualizar la asociación.
+ *
+ *   delete:
+ *     tags: [Productos]
+ *     summary: Desasociar un proveedor de un producto
+ *     description: Desactiva la asociación sin eliminar el registro.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Proveedor desasociado correctamente.
+ *       401:
+ *         description: No autenticado.
+ *       403:
+ *         description: Sin permiso PRODUCT_SUPPLIER_MANAGE.
+ *       404:
+ *         description: Asociación no encontrada.
+ *
+ * /api/products/{id}/suppliers/{supplierId}/preferred:
+ *   patch:
+ *     tags: [Productos]
+ *     summary: Establecer proveedor preferido de un producto
+ *     description: Establece el proveedor preferido y desmarca al anterior.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *       - in: path
+ *         name: supplierId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *     responses:
+ *       200:
+ *         description: Proveedor preferido actualizado correctamente.
+ *       400:
+ *         description: El proveedor o la asociación está inactiva.
+ *       401:
+ *         description: No autenticado.
+ *       403:
+ *         description: Sin permiso PRODUCT_SUPPLIER_MANAGE.
+ *       404:
+ *         description: Producto o asociación no encontrada.
+ *       409:
+ *         description: Conflicto al establecer el proveedor preferido.
  */
 
 export {};
