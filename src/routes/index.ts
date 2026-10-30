@@ -11,6 +11,7 @@ import suppliersRoutes from "../features/purchasing/suppliers/suppliers.routes";
 import unitsOfMeasureRoutes from "../features/catalog/units-of-measure/units-of-measure.routes";
 import productsRoutes from "../features/catalog/products/products.routes";
 import warehousesRoutes from "../features/inventory/warehouses/warehouses.routes";
+import productBatchesRoutes from "../features/inventory/product-batches/product-batches.routes";
 
 const router = Router();
 
@@ -27,5 +28,6 @@ router.use("/suppliers", suppliersRoutes);
 router.use("/units-of-measure", unitsOfMeasureRoutes);
 router.use("/products", productsRoutes);
 router.use("/warehouses", warehousesRoutes);
+router.use("/product-batches", productBatchesRoutes);
 
 export default router;
