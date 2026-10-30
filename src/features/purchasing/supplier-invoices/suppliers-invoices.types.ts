@@ -8,7 +8,7 @@ export interface SupplierInvoice {
     subtotal: number;
     tax_amount: number;
     total_amount: number;
-    status: "DRAFT" | "SUBMITTED" | "APPROVED" | "REJECTED" | "PAID";
+    status: "DRAFT" | "REGISTERED" | "CANCELLED";
     notes: string | null;
     created_at: Date;
     created_by: number;
@@ -25,7 +25,7 @@ export interface CreateSupplierInvoice {
     subtotal: number;
     tax_amount: number;
     total_amount: number;
-    status: "DRAFT" | "SUBMITTED" | "APPROVED" | "REJECTED" | "PAID";
+    status: "DRAFT" | "REGISTERED" | "CANCELLED";
     notes?: string | null;
 }
 
@@ -38,6 +38,6 @@ export interface UpdateSupplierInvoice {
     subtotal?: number;
     tax_amount?: number;
     total_amount?: number;
-    status?: "DRAFT" | "SUBMITTED" | "APPROVED" | "REJECTED" | "PAID";
+    status?: "DRAFT" | "REGISTERED" | "CANCELLED";
     notes?: string | null;
 }
