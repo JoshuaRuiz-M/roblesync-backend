@@ -1,7 +1,7 @@
 export interface SupplierInvoice {
     supplier_invoice_id: number;
     supplier_id: number;
-    purchase_order_id: string;
+    purchase_order_id: number;
     invoice_number: string;
     invoice_date: Date;
     due_date: Date;
@@ -18,7 +18,7 @@ export interface SupplierInvoice {
 
 export interface CreateSupplierInvoice {
     supplier_id: number;
-    purchase_order_id: string;
+    purchase_order_id: number;
     invoice_number: string;
     invoice_date: Date;
     due_date: Date;
@@ -31,7 +31,7 @@ export interface CreateSupplierInvoice {
 
 export interface UpdateSupplierInvoice {
     supplier_id?: number;
-    purchase_order_id?: string;
+    purchase_order_id?: number;
     invoice_number?: string;
     invoice_date?: Date;
     due_date?: Date;
