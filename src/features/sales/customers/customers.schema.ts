@@ -7,7 +7,7 @@ export const createCustomersSchema = z.strictObject({
 
     business_name: z.string().trim().min(1).max(200),
 
-    customer_type: z.string().trim().min(1).max(20),
+    customer_type: z.enum(["WHOLESALE", "RETAIL", "CHAIN"]).default("RETAIL"),
 
     contact_name: z.string().trim().max(150).nullable().optional(),
 
