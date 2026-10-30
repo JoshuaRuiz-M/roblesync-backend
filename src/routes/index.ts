@@ -17,6 +17,7 @@ import inventoryMovementsRoutes from "../features/inventory/inventory-movements/
 import goodsReceiptsRoutes from "../features/purchasing/goods-receipts/goods-receipts.routes";
 import suppliersInvoicesRoutes from "../features/purchasing/supplier-invoices/suppliers-invoices.routes";
 import salespersonsRoutes from "../features/sales/salespersons/salespersons.routes";
+import customersRoutes from "../features/sales/customers/customers.routes";
 
 const router = Router();
 
@@ -39,5 +40,6 @@ router.use("/inventory-movements", inventoryMovementsRoutes);
 router.use("/goods-receipts", goodsReceiptsRoutes);
 router.use("/supplier-invoices", suppliersInvoicesRoutes);
 router.use("/salespersons", salespersonsRoutes);
+router.use("/customers", customersRoutes);
 
 export default router;
