@@ -15,6 +15,7 @@ import productBatchesRoutes from "../features/inventory/product-batches/product-
 import purchaseOrdersRoutes from "../features/purchasing/purchase-orders/purchase-orders.routes";
 import inventoryMovementsRoutes from "../features/inventory/inventory-movements/inventory-movements.routes";
 import goodsReceiptsRoutes from "../features/purchasing/goods-receipts/goods-receipts.routes";
+import suppliersInvoicesRoutes from "../features/purchasing/supplier-invoices/suppliers-invoices.routes";
 const router = Router();
 
 // Feature routes
@@ -34,5 +35,6 @@ router.use("/product-batches", productBatchesRoutes);
 router.use("/purchase-orders", purchaseOrdersRoutes);
 router.use("/inventory-movements", inventoryMovementsRoutes);
 router.use("/goods-receipts", goodsReceiptsRoutes);
+router.use("/supplier-invoices", suppliersInvoicesRoutes);
 
 export default router;
