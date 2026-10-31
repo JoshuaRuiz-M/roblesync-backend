@@ -137,7 +137,7 @@ INSERT INTO navigation.menu_items (
 )
 VALUES
 (NULL, 'SECURITY', 'Seguridad', NULL, 'pi pi-shield', 1, 1, SYSDATETIME(), NULL),
-(NULL, 'CATALOGS', 'Catálogos', NULL, 'pi pi-box', 2, 1, SYSDATETIME(), NULL),
+(NULL, 'CATALOGS', 'Catálogos', NULL, 'pi pi-book', 2, 1, SYSDATETIME(), NULL);
 GO
 
 -- Submenús de Seguridad
@@ -175,4 +175,4 @@ GO
 
 INSERT INTO navigation.role_menu_items (role_id, menu_item_id)
 VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7)
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6)
