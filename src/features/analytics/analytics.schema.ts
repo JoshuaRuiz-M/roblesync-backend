@@ -48,3 +48,24 @@ export const kardexSummaryQuerySchema = z
 
 export type KardexQuery = z.output<typeof kardexQuerySchema>;
 export type KardexSummaryQuery = z.output<typeof kardexSummaryQuerySchema>;
+
+const dashboardDateSchema = z.iso.date();
+
+export const dashboardDateFiltersSchema = z
+    .strictObject({
+        start_date: dashboardDateSchema.optional(),
+        end_date: dashboardDateSchema.optional(),
+    })
+    .refine((data) => !data.start_date || !data.end_date || data.start_date <= data.end_date, {
+        message: "La fecha inicial no puede ser mayor que la fecha final.",
+        path: ["end_date"],
+    });
+
+export const dashboardTopProductsSchema = dashboardDateFiltersSchema.safeExtend({
+    top: z.coerce.number().int().min(1).max(100).default(5),
+});
+
+export const dashboardInventoryAlertsSchema = z.strictObject({
+    expiration_days: z.coerce.number().int().min(0).max(365).default(30),
+    top: z.coerce.number().int().min(1).max(100).default(20),
+});

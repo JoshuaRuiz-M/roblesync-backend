@@ -6,6 +6,14 @@ import type {
     KardexResponse,
     KardexSummary,
     KardexSummaryFilters,
+    DashboardDateFilters,
+    DashboardTopProductsFilters,
+    DashboardInventoryAlertsFilters,
+    DashboardOverview,
+    DashboardSalesTrend,
+    DashboardTopProduct,
+    DashboardSalesByCategory,
+    DashboardInventoryAlert,
 } from "./analytics.types";
 import { db } from "../../configurations/database";
 
@@ -106,5 +114,84 @@ export class AnalyticsRepository {
         }
 
         throw new Error("La respuesta del procedimiento almacenado no tiene un formato válido.");
+    }
+
+    private async executeDashboardProcedure<T>(
+        sql: string,
+        bindings: Knex.RawBinding[],
+    ): Promise<T[]> {
+        const result = await this.db.raw(sql, bindings);
+
+        if (Array.isArray(result)) {
+            return result as T[];
+        }
+
+        if (Array.isArray(result?.recordset)) {
+            return result.recordset as T[];
+        }
+
+        if (Array.isArray(result?.recordsets?.[0])) {
+            return result.recordsets[0] as T[];
+        }
+
+        throw new Error("Formato de respuesta SQL no reconocido.");
+    }
+
+    async getDashboardOverview(filters: DashboardDateFilters): Promise<DashboardOverview> {
+        const rows = await this.executeDashboardProcedure<DashboardOverview>(
+            `EXEC analytics.sp_GetDashboardOverview
+            @StartDate = ?,
+            @EndDate = ?`,
+            [filters.start_date ?? null, filters.end_date ?? null],
+        );
+
+        if (!rows[0]) {
+            throw new Error("No se pudo obtener el resumen del Dashboard.");
+        }
+
+        return rows[0];
+    }
+
+    async getDashboardSalesTrend(filters: DashboardDateFilters): Promise<DashboardSalesTrend[]> {
+        return this.executeDashboardProcedure<DashboardSalesTrend>(
+            `EXEC analytics.sp_GetSalesTrend
+            @StartDate = ?,
+            @EndDate = ?`,
+            [filters.start_date ?? null, filters.end_date ?? null],
+        );
+    }
+
+    async getDashboardTopProducts(
+        filters: DashboardTopProductsFilters,
+    ): Promise<DashboardTopProduct[]> {
+        return this.executeDashboardProcedure<DashboardTopProduct>(
+            `EXEC analytics.sp_GetTopSellingProducts
+            @StartDate = ?,
+            @EndDate = ?,
+            @Top = ?`,
+            [filters.start_date ?? null, filters.end_date ?? null, filters.top],
+        );
+    }
+
+    async getDashboardSalesByCategory(
+        filters: DashboardDateFilters,
+    ): Promise<DashboardSalesByCategory[]> {
+        return this.executeDashboardProcedure<DashboardSalesByCategory>(
+            `EXEC analytics.sp_GetSalesByCategory
+            @StartDate = ?,
+            @EndDate = ?`,
+            [filters.start_date ?? null, filters.end_date ?? null],
+        );
+    }
+
+    async getDashboardInventoryAlerts(
+        filters: DashboardInventoryAlertsFilters,
+    ): Promise<DashboardInventoryAlert[]> {
+        return this.executeDashboardProcedure<DashboardInventoryAlert>(
+            `EXEC analytics.sp_GetInventoryAlerts
+            @ExpirationDays = ?,
+            @Top = ?`,
+            [filters.expiration_days, filters.top],
+        );
     }
 }
