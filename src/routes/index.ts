@@ -23,6 +23,7 @@ import salesOrdersRoutes from "../features/sales/sales-orders/sales-orders.route
 import salesInvoicesRoutes from "../features/sales/sales-invoices/sales-invoices.routes";
 import warehouseTransfersRoutes from "../features/logistics/warehouse-transfers/warehouse-transfers.routes";
 import salesTargetsRoutes from "../features/sales/sales-targets/sales-targets.routes";
+import analyticsRoutes from "../features/analytics/analytics.routes";
 
 const router = Router();
 
@@ -51,4 +52,6 @@ router.use("/sales-orders", salesOrdersRoutes);
 router.use("/sales-invoices", salesInvoicesRoutes);
 router.use("/warehouse-transfers", warehouseTransfersRoutes);
 router.use("/sales-targets", salesTargetsRoutes);
+router.use("/analytics", analyticsRoutes);
+
 export default router;
